@@ -20,15 +20,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: 'npm'
+      
       - name: Install dependencies
-        run: npm ci
+        run: |
+          echo "Installing dependencies..."
+          npm ci
+          echo "Dependencies installed successfully"
+      
       - name: Build with Vite
-        run: npm run build
+        run: |
+          echo "Starting build process..."
+          npm run build
+          echo "Build completed successfully"
+          ls -la dist/
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
