@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+    --color-cyber-bg: #050510;
+    --color-cyber-accent: #00f3ff;
+    --color-cyber-pink: #bc13fe;
+    --color-cyber-yellow: #fcee0a;
+}
+
+@layer base {
+    body {
+        @apply bg-cyber-bg text-white overflow-hidden;
+        font-family: 'Courier New', Courier, monospace;
+    }
+}
+
+/* Custom Utilities */
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(0, 243, 255, 0.5);
+}
+
+.glow-text {
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
+}
+
+.perspective-container {
+    perspective: 100px;
+}
