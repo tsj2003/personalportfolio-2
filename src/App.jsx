@@ -232,7 +232,7 @@ function App() {
 
     const scrollProgress = isCompact ? scrollYProgress : scrollXProgress;
     const scrollToProjects = () => projectsRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' });
-    const projectFilters = ['All', ...new Set(profile.projects.flatMap((project) => project.tech))];
+    const projectFilters = ['All', 'Python', 'TypeScript', 'AI', 'Automation', 'Frontend', 'Dashboard', 'RAG'];
     const normalizedQuery = projectQuery.trim().toLowerCase();
     const filteredProjects = profile.projects.filter((project) => {
         const matchesFilter = activeProjectFilter === 'All' || project.tech.includes(activeProjectFilter);
@@ -466,7 +466,7 @@ function App() {
                         </div>
 
                         <div className="panel-surface mb-6 rounded-[28px] border-cyber-accent/14 bg-[#08111d]/88 p-4">
-                            <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr] xl:items-center">
+                            <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-center">
                                 <label className="content-shell flex items-center gap-3 rounded-2xl px-4 py-3">
                                     <Search size={18} className="text-cyber-accent" />
                                     <input
@@ -477,12 +477,12 @@ function App() {
                                     />
                                 </label>
 
-                                <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
-                                    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-cyber-yellow/75 sm:flex-shrink-0">
+                                <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
+                                    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-cyber-yellow/75 lg:flex-shrink-0">
                                         <SlidersHorizontal size={14} />
                                         Filter
                                     </span>
-                                    <div className="-mx-1 flex min-w-0 gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
+                                    <div className="-mx-1 flex min-w-0 gap-2 overflow-x-auto px-1 pb-1 lg:flex-wrap lg:justify-end lg:overflow-visible">
                                         {projectFilters.map((filter) => (
                                             <button
                                                 key={filter}
@@ -527,7 +527,7 @@ function App() {
                                         onMouseLeave={() => setHoveredProject(null)}
                                         className="group h-full"
                                     >
-                                    <Card title={project.title} eyebrow={project.eyebrow} className="relative flex h-full flex-col overflow-hidden border-cyber-pink/20 bg-gradient-to-b from-[#08111d]/96 to-[#0d2330]/76 transition-transform duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_18px_60px_rgba(125,249,255,0.12)]">
+                                    <Card title={project.title} eyebrow={project.eyebrow} className="relative flex h-full flex-col overflow-hidden border-cyber-pink/20 bg-gradient-to-b from-[#08111d]/96 to-[#0d2330]/76 p-5 md:p-6 transition-transform duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_18px_60px_rgba(125,249,255,0.12)]">
                                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyber-accent/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                         <div className="mb-4 flex items-center justify-between gap-3">
                                             <span className="rounded-full border border-cyber-accent/18 bg-cyber-accent/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-cyan-100">
@@ -544,8 +544,25 @@ function App() {
                                                 ))}
                                             </div>
                                         </div>
-                                        <p className="text-soft">{project.description}</p>
-                                        <p className="content-shell mt-4 rounded-2xl border-cyber-accent/15 px-4 py-4 text-sm leading-7 text-cyan-50">
+                                        <p className="project-trim-3 text-soft text-sm leading-7 md:text-base">{project.description}</p>
+                                        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                                            {project.liveLink && (
+                                                <SmartLink href={project.liveLink} className="inline-flex items-center justify-center gap-2 rounded-full bg-cyber-accent px-4 py-3 text-center text-xs font-black uppercase tracking-[0.2em] text-black transition-transform hover:scale-[1.02]">
+                                                    Live Demo
+                                                    <ExternalLink size={15} />
+                                                </SmartLink>
+                                            )}
+                                            <SmartLink
+                                                href={project.repoLink}
+                                                className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-cyber-accent transition-colors hover:border-cyber-accent/40 hover:text-white ${
+                                                    project.liveLink ? 'bg-white/5' : 'bg-cyber-accent/10 sm:col-span-2'
+                                                }`}
+                                            >
+                                                GitHub
+                                                <Github size={15} />
+                                            </SmartLink>
+                                        </div>
+                                        <p className="project-trim-4 content-shell mt-4 rounded-2xl border-cyber-accent/15 px-4 py-4 text-sm leading-7 text-cyan-50">
                                             {project.impact}
                                         </p>
                                         <div className="mt-5 flex flex-wrap gap-2">
@@ -558,23 +575,6 @@ function App() {
                                                     {tech}
                                                 </MotionDiv>
                                             ))}
-                                        </div>
-                                        <div className="mt-6 grid gap-3 pt-2 sm:grid-cols-2">
-                                            {project.liveLink && (
-                                                <SmartLink href={project.liveLink} className="inline-flex items-center justify-center gap-2 rounded-full bg-cyber-accent px-4 py-3 text-center text-xs font-black uppercase tracking-[0.2em] text-black transition-transform hover:scale-[1.02]">
-                                                    Live Demo
-                                                    <ExternalLink size={15} />
-                                                </SmartLink>
-                                            )}
-                                            <SmartLink
-                                                href={project.repoLink}
-                                                className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-cyber-accent transition-colors hover:border-cyber-accent/40 hover:text-white ${
-                                                    project.liveLink ? 'bg-white/5' : 'bg-cyber-accent/10'
-                                                }`}
-                                            >
-                                                GitHub
-                                                <Github size={15} />
-                                            </SmartLink>
                                         </div>
                                     </Card>
                                     </div>

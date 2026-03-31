@@ -111,8 +111,8 @@ export const profile = {
         {
             title: "DocuGenAI",
             eyebrow: "AI Document Platform",
-            description: "A Python platform for generating PowerPoint decks and Word documents with AI-driven content workflows.",
-            impact: "Focused on automated document creation, multi-format generation, and practical output for real user tasks.",
+            description: "AI-powered document generation for PowerPoint decks and Word files.",
+            impact: "Built for fast multi-format output and practical content workflows.",
             tech: ["Python", "FastAPI", "LLM APIs", "Automation"],
             repoLink: "https://github.com/tsj2003/AI-PPT-and-DOC-Gen",
             liveLink: "https://docugenaii.netlify.app/login"
@@ -120,8 +120,8 @@ export const profile = {
         {
             title: "Clinic Ops Agent",
             eyebrow: "Operations Automation",
-            description: "A Python agent/service focused on clinic operations automation and workflow tooling for operational teams.",
-            impact: "Highlights AI-assisted process handling for healthcare operations with a deployment-ready product surface.",
+            description: "An operations agent for streamlining clinic workflows and task handling.",
+            impact: "Brings AI-assisted automation into a deployment-ready healthcare ops product.",
             tech: ["Python", "Agents", "Automation", "Healthcare"],
             repoLink: "https://github.com/tsj2003/clinic-ops-agent",
             liveLink: "https://clinic-ops-agent.onrender.com/"
@@ -129,8 +129,8 @@ export const profile = {
         {
             title: "Retail Sense",
             eyebrow: "Retail Analytics",
-            description: "A TypeScript project for retail analytics and operational insights across store or inventory workflows.",
-            impact: "Designed as a modern retail dashboard experience with clearer visibility into business-facing metrics.",
+            description: "A retail analytics dashboard for operational and inventory-focused insights.",
+            impact: "Designed to make store metrics and business visibility easier to read.",
             tech: ["TypeScript", "Analytics", "Dashboard", "Frontend"],
             repoLink: "https://github.com/tsj2003/Retail-Sense",
             liveLink: "https://retailsense.netlify.app/"
@@ -138,8 +138,8 @@ export const profile = {
         {
             title: "NITT Karam",
             eyebrow: "Community Platform",
-            description: "A TypeScript project likely built around an event, initiative, or organization under the NITT Karam name.",
-            impact: "Shows polished frontend product work with a live deployed experience and clearer project branding.",
+            description: "A frontend experience built for the NITT Karam initiative or community.",
+            impact: "Shows polished product UI work with clear branding and a live deployment.",
             tech: ["TypeScript", "Frontend", "Web App", "UI"],
             repoLink: "https://github.com/tsj2003/Nitt-karam",
             liveLink: "https://nittkaram.netlify.app/"
@@ -147,72 +147,64 @@ export const profile = {
         {
             title: "BharatRAG Enterprise",
             eyebrow: "Grounded AI System",
-            description: "An enterprise Retrieval-Augmented Generation project designed for India-specific data and grounded response workflows.",
-            impact: "Built around retrieval quality, context-aware generation, and enterprise-style document understanding.",
+            description: "An enterprise RAG system for grounded answers over India-focused data.",
+            impact: "Built around retrieval quality, context grounding, and document understanding.",
             tech: ["Python", "RAG", "Embeddings", "LLM APIs"],
             repoLink: "https://github.com/tsj2003/BharatRAG_Enterprise"
         },
         {
             title: "AutoReach AI",
             eyebrow: "Outreach Automation",
-            description: "A Python automation and AI tool likely focused on outreach, contact flows, or content sequencing.",
-            impact: "Represents workflow automation work where AI and process tooling meet real business operations.",
+            description: "An automation tool for outreach, contact flows, and sequencing work.",
+            impact: "Connects AI automation with real business process tooling.",
             tech: ["Python", "Automation", "AI", "Productivity"],
             repoLink: "https://github.com/tsj2003/AutoReach-AI"
         },
         {
             title: "Seat Reservation",
             eyebrow: "Booking System",
-            description: "A TypeScript seat booking and reservation system for selecting, managing, and reserving available seats.",
-            impact: "Demonstrates user-facing state management and reservation logic in a practical web product.",
+            description: "A seat booking system for selecting, managing, and reserving seats.",
+            impact: "Demonstrates reservation logic and user-facing state management.",
             tech: ["TypeScript", "Booking", "Frontend", "UI"],
             repoLink: "https://github.com/tsj2003/seat-reservation"
         },
         {
             title: "BillBuddy",
             eyebrow: "Billing Workflow",
-            description: "A TypeScript project for bill, invoice, or expense management with a product-oriented interface.",
-            impact: "Highlights financial workflow thinking with a simple, useful problem space and clean UX potential.",
+            description: "A billing and invoice workflow app with a product-oriented interface.",
+            impact: "Highlights financial workflow thinking with a clean, useful UX.",
             tech: ["TypeScript", "Fintech", "Dashboard", "Web App"],
             repoLink: "https://github.com/tsj2003/billbuddy"
         },
         {
             title: "AI Manga Generator",
             eyebrow: "Creative AI",
-            description: "An AI-based generator for manga-style images or comic outputs with model-backed generation flows.",
-            impact: "Shows experimentation in multimodal AI and creative generation beyond plain text applications.",
+            description: "An AI generator for manga-style images and comic-inspired outputs.",
+            impact: "Shows multimodal experimentation beyond plain text applications.",
             tech: ["Python", "Generative AI", "Images", "Creative Tools"],
             repoLink: "https://github.com/tsj2003/AI-Manga-generator"
         },
         {
             title: "Bridge Cost Comparison Software",
             eyebrow: "Engineering Desktop App",
-            description: "A PyQt5 desktop application with SQLite support for comparing estimated costs between steel and concrete bridge designs.",
-            impact: "Pairs engineering use cases with desktop UI and structured data storage for decision support.",
+            description: "A PyQt5 desktop app for comparing steel and concrete bridge costs.",
+            impact: "Pairs engineering workflows with desktop UI and structured data support.",
             tech: ["Python", "PyQt5", "SQLite", "Desktop App"],
             repoLink: "https://github.com/tsj2003/Steel-vs.-Concrete-Bridge-Cost-Comparison-Software-with-SQLite-and-PyQt5"
         },
         {
-            title: "Delivery System",
-            eyebrow: "Logistics Workflow",
-            description: "A JavaScript project implementing a delivery or logistics system for routing and operational flows.",
-            impact: "Adds a practical operations-oriented app to the portfolio with system thinking around movement and fulfillment.",
-            tech: ["JavaScript", "Logistics", "Operations", "Web App"],
-            repoLink: "https://github.com/tsj2003/delivery_system"
-        },
-        {
             title: "Audio Intelligence",
             eyebrow: "Audio AI Demo",
-            description: "A TypeScript project centered on audio processing, AI-assisted analysis, or audio intelligence workflows.",
-            impact: "Broadens the portfolio into media-aware product ideas and signal-oriented interfaces.",
+            description: "An audio-focused AI demo for processing and intelligence workflows.",
+            impact: "Broadens the portfolio into media-aware product ideas and interfaces.",
             tech: ["TypeScript", "Audio", "AI", "Frontend"],
             repoLink: "https://github.com/tsj2003/Audio-Intelligence-"
         },
         {
             title: "Leave Management App",
             eyebrow: "Business Workflow",
-            description: "A Vue-based leave and absence management app for handling employee requests and approvals.",
-            impact: "Shows business application thinking with forms, workflow states, and administrative UI patterns.",
+            description: "A Vue app for handling leave requests, approvals, and employee absence flows.",
+            impact: "Shows business workflow thinking with forms, states, and admin UI patterns.",
             tech: ["Vue", "HR Tech", "Workflow", "Frontend"],
             repoLink: "https://github.com/tsj2003/leave-management-app"
         }
