@@ -1,106 +1,182 @@
-import { Github, Linkedin, ExternalLink, Mail, FileText } from 'lucide-react';
-
 export const profile = {
     name: "Tarandeep Singh Juneja",
-    role: "Software Engineer (Backend / AI)",
-    tagline: "Meta Hacker Cup Global Rank 186 | Ex–Python Dev Intern @ IIT Bombay",
-    location: "Damoh, Madhya Pradesh, India",
-    education: [
+    role: "Backend & AI Engineer",
+    hook: "I build AI systems that actually ship, not just demos.",
+    headline: "From backend architecture to LLM workflows, I build products that are practical, fast, and ready for real users.",
+    tagline: "Final-year VIT engineer with IIT Bombay internship experience, open-source contributions, and a bias for shipping reliable systems quickly.",
+    location: "India",
+    terminalLines: [
+        "> boot portfolio --candidate tarandeep",
+        "Loading backend systems, AI workflows, and open-source proof...",
+        "Status: production-minded engineer ready to contribute from day one."
+    ],
+    about: [
+        "I am a final-year Computer Science student at VIT focused on backend systems, APIs, and practical AI applications.",
+        "My work spans FastAPI services, Retrieval-Augmented Generation pipelines, LLM integrations, and production-style automation systems.",
+        "I like solving hard problems, building useful systems, and shipping faster than most people expect."
+    ],
+    proofLines: [
+        "Built FastAPI backends with async flows, auth, webhooks, retries, and fallback handling.",
+        "Worked on LLM-based products including document generation, RAG pipelines, and automation systems.",
+        "Contributed to IIT Bombay FOSSEE's Osdag ecosystem and shipped changes inside an existing production-style codebase."
+    ],
+    personality: [
+        "I enjoy building tools that turn messy workflows into clean APIs.",
+        "I am currently exploring stronger system design, evaluation for AI apps, and better product reliability patterns.",
+        "I care a lot about software that looks good in demos and still holds up when people actually use it."
+    ],
+    stats: [
         {
-            degree: "B.Tech in Computer Science and Technology",
-            institution: "Vellore Institute of Technology",
-            period: "Oct 2022 – Oct 2026",
-            details: "CGPA: 8.51 / 10"
+            label: "Global Rank",
+            value: 186,
+            suffix: "",
+            detail: "Meta Hacker Cup",
+            modalTitle: "Meta Hacker Cup Performance",
+            modalPoints: [
+                "Achieved Global Rank 186, putting me in the top 0.5%.",
+                "Shows strong problem-solving speed under competition pressure.",
+                "Signals consistency in algorithms, debugging, and execution."
+            ]
         },
         {
-            degree: "Data Structures & Algorithms",
-            institution: "Coding Ninjas",
-            period: "Professional Training",
-            details: "Specialized in efficient problem solving."
+            label: "Problems Solved",
+            value: 700,
+            suffix: "+",
+            detail: "DSA across platforms",
+            modalTitle: "Problem Solving Depth",
+            modalPoints: [
+                "Solved 700+ DSA problems across interview-focused platforms.",
+                "Built confidence in data structures, optimization, and edge cases.",
+                "Helps me write backend code with stronger fundamentals."
+            ]
+        },
+        {
+            label: "API Footprint",
+            value: 50,
+            suffix: "+",
+            detail: "DocuGenAI backend",
+            modalTitle: "API Delivery Proof",
+            modalPoints: [
+                "Designed a backend shaped around 50+ APIs for document generation workflows.",
+                "Handled async processing and long-running operations.",
+                "Focused on fallback reliability across AI providers."
+            ]
+        },
+        {
+            label: "Merged PRs",
+            value: 3,
+            suffix: "",
+            detail: "Osdag contributions",
+            modalTitle: "Open Source Contributions",
+            modalPoints: [
+                "Contributed multiple merged PRs to Osdag-related work.",
+                "Worked inside an existing engineering software codebase.",
+                "Demonstrated collaboration, ownership, and code quality in shared systems."
+            ]
+        }
+    ],
+    education: [
+        {
+            degree: "B.Tech in Computer Science",
+            institution: "Vellore Institute of Technology",
+            period: "2022 - 2026",
+            details: "Focused on backend engineering, algorithms, and AI systems."
         }
     ],
     experience: [
         {
-            role: "Summer Intern",
-            company: "FOSSEE, IIT Bombay (Remote)",
-            period: "Feb 2025 – Jun 2025",
+            role: "Python Developer Intern",
+            company: "FOSSEE, IIT Bombay",
+            period: "2025",
             points: [
-                "Built plate-girder UI module for Osdag; shipped to 500+ users.",
-                "Implemented bolted butt-joint computation logic in Python with 99% accuracy.",
-                "Improved UI responsiveness by ~25%.",
-                "Collaborated with researchers; merged PRs, added unit tests."
+                "Contributed to Osdag, a production engineering software used for structural design workflows.",
+                "Built UI for plate girder flows and worked on bolted joint logic for real engineering use cases.",
+                "Collaborated in an existing codebase, shipped improvements, and contributed to merged pull requests."
             ],
-            tech: "Python, PyQt, Engineering Computation"
+            tech: "Python, PyQt, Engineering Software, Open Source"
         },
         {
-            role: "Software Taxonomy Analyst",
-            company: "Outlier (Remote)",
-            period: "Dec 2024 – Jun 2025",
+            role: "Backend / AI Project Builder",
+            company: "Independent Projects",
+            period: "2024 - Present",
             points: [
-                "Labeled 100+ multilingual code snippets (Python, C++, JavaScript).",
-                "Improved ML taxonomy coverage via debugging & architecture analysis."
+                "Built AI-backed products using FastAPI, PostgreSQL, async processing, and LLM APIs.",
+                "Worked on document generation, email automation, RAG pipelines, billing systems, and authentication flows.",
+                "Focused on reliability features such as batching, fallbacks, retries, and structured APIs."
             ],
-            tech: "Prompt Engineering, Code Interpretation"
-        },
-        {
-            role: "Finance Co-Lead",
-            company: "EDU4U Club (VIT Bhopal)",
-            period: "Nov 2024 – May 2025",
-            points: [
-                "Managed budgets & fundraising.",
-                "Supported technical tools for outreach."
-            ],
-            tech: "Financial Analysis, Team Collaboration"
+            tech: "FastAPI, PostgreSQL, LLM APIs, RAG, OAuth2"
         }
     ],
     projects: [
         {
-            title: "AutoReach AI",
-            description: "Automated personalized job emails using Gmail API. 2,900+ emails, 90%+ delivery, 50%+ HR responses.",
-            tech: ["Python", "Gmail API", "Jinja2"],
-            link: "#"
+            title: "DocuGenAI",
+            eyebrow: "Flagship AI Platform",
+            description: "Built an AI document generation platform with a FastAPI backend and LLM integrations for blogs, presentations, and long-running generation workflows.",
+            impact: "Shaped around 50+ APIs, async task handling, and provider fallback logic for better reliability.",
+            tech: ["FastAPI", "PostgreSQL", "LLM APIs", "AsyncIO"],
+            link: "https://github.com/tsj2003/docugenai"
         },
         {
-            title: "CNN Audio Classification",
-            description: "CNN with Mel-spectrograms for 50 sound classes. 83.5% accuracy, FastAPI inference, explainable visualizations.",
-            tech: ["Python", "PyTorch", "FastAPI", "Modal"],
-            link: "#"
+            title: "MailMantra / AutoReach AI",
+            eyebrow: "Automation Infrastructure",
+            description: "Developed an email automation system using Gmail API and OAuth2 with personalization, batching, and controlled sending flows.",
+            impact: "Added template-based generation, retry handling, and logging to support dependable outreach automation.",
+            tech: ["Python", "Gmail API", "OAuth2", "Jinja2"],
+            link: "https://github.com/tsj2003/mailmantra"
         },
         {
-            title: "JTCSync - Interview Platform",
-            description: "Remote interview platform with video, collaborative coding, and scheduling.",
-            tech: ["Next.js 14", "TypeScript", "Stream SDK", "Clerk"],
-            link: "https://interviewplus.netlify.app/"
+            title: "BharatRAG",
+            eyebrow: "Grounded AI System",
+            description: "Built a Retrieval-Augmented Generation pipeline that ingests documents, creates embeddings, retrieves relevant chunks, and generates grounded answers.",
+            impact: "Designed the retrieval flow around chunking, embeddings, and context-first responses instead of generic generation.",
+            tech: ["Python", "RAG", "Embeddings", "LLM APIs"],
+            link: "https://github.com/tsj2003/BharatRAG_Enterprise"
         },
         {
-            title: "Nitt Karam - AI Task Manager",
-            description: "NLP-based task creation with priority scheduling.",
-            tech: ["React", "TypeScript", "Tailwind", "Gemini API"],
-            link: "https://nittkaram.netlify.app/"
+            title: "BillBuddy",
+            eyebrow: "Payments Backend",
+            description: "Created a backend for invoice and payment handling with secure endpoints, Stripe integration, authentication, and webhook flows.",
+            impact: "Focused on backend fundamentals: payment events, API protection, and container-friendly setup.",
+            tech: ["FastAPI", "PostgreSQL", "Stripe", "Docker"],
+            link: "https://github.com/tsj2003/billbuddy"
+        }
+    ],
+    openSource: [
+        {
+            title: "Osdag Core Contributions",
+            description: "Contributed to IIT Bombay FOSSEE's Osdag ecosystem with work around production engineering workflows.",
+            link: "https://github.com/osdag-admin/Osdag"
         },
         {
-            title: "Credit Card Fraud Detection",
-            description: "Logistic Regression on imbalanced data. 92% accuracy, 284K+ transactions.",
-            tech: ["Python", "Scikit-learn", "Streamlit"],
-            link: "#"
+            title: "Merged PR #5",
+            description: "Feature and fixes contributed in the Osdag codebase.",
+            link: "https://github.com/AmanAg744/Osdag/pull/5"
+        },
+        {
+            title: "Merged PR #6",
+            description: "Follow-up engineering contribution in the Osdag workflow.",
+            link: "https://github.com/AmanAg744/Osdag/pull/6"
+        },
+        {
+            title: "Merged PR #7",
+            description: "Additional merged improvements in the Osdag codebase.",
+            link: "https://github.com/AmanAg744/Osdag/pull/7"
         }
     ],
     skills: [
-        "Python", "FastAPI", "PyTorch", "React", "Next.js", "SQL",
-        "Data Structures & Algorithms", "Machine Learning", "Generative AI",
-        "Prompt Engineering", "Backend Development", "REST APIs"
+        "Python", "C++", "FastAPI", "Flask", "PostgreSQL", "REST APIs",
+        "Docker", "Git", "LLM APIs", "RAG", "Embeddings", "System Design"
     ],
     achievements: [
-        "Meta Hacker Cup 2025 – Global Rank 186",
-        "HackWithInfy 2025 – Finalist (Infosys)",
-        "Oracle Generative AI Professional (2025)",
-        "Postman API Student Expert"
+        "Meta Hacker Cup - Global Rank 186 (Top 0.5%)",
+        "HackWithInfy - Cleared Round 2 / PPI",
+        "700+ DSA problems solved",
+        "Open-source contributor to IIT Bombay FOSSEE projects"
     ],
     links: {
         github: "https://github.com/tsj2003",
         linkedin: "https://www.linkedin.com/in/tarandeep-singh-juneja-55542424b",
-        portfolio: "https://portfoliobytsj.netlify.app",
-        alt_portfolio: "https://portfolio-tsj.netlify.app",
-        email: "mailto:tarandeepsinghjuneja@example.com" // Placeholder email, update if provided
+        portfolio: "https://portfolio-tsj.netlify.app/",
+        contact: "mailto:tarandeepjuneja11@gmail.com"
     }
 };

@@ -1,206 +1,487 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import {
+    Github,
+    Linkedin,
+    ExternalLink,
+    ArrowRight,
+    Award,
+    Sparkles,
+    Mail,
+    MapPin,
+    FolderGit2,
+    Rocket,
+    X,
+    ChevronRight,
+    Bot,
+    Cpu,
+    Database,
+    Gauge
+} from 'lucide-react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import { profile } from './data';
 import Car from './components/Car';
 import Background from './components/Background';
 import AudioPlayer from './components/AudioPlayer';
-import { Github, Linkedin, ExternalLink, ArrowRight, Award } from 'lucide-react';
-import Lenis from 'lenis';
-import 'lenis/dist/lenis.css';
 
-const Card = ({ title, children, className = "" }) => (
-    <div className={`p-6 bg-cyber-bg/90 border border-cyber-accent/30 rounded-xl backdrop-blur-md shadow-[0_0_15px_rgba(0,243,255,0.1)] ${className}`}>
-        <h3 className="text-xl md:text-2xl font-bold text-cyber-accent mb-4 font-mono">{title}</h3>
+const MotionDiv = motion.div;
+
+const proofIcons = [Cpu, Bot, Database];
+
+const Card = ({ title, eyebrow, children, className = '' }) => (
+    <div className={`panel-surface rounded-[28px] p-6 md:p-8 ${className}`}>
+        {eyebrow && <p className="mb-3 text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">{eyebrow}</p>}
+        {title && <h3 className="text-strong mb-4 text-2xl font-bold md:text-3xl">{title}</h3>}
         {children}
     </div>
 );
 
-const Section = ({ className, children }) => (
-    <div className={`flex-shrink-0 w-full min-h-screen md:w-screen md:h-screen flex items-center justify-center p-4 md:p-8 relative ${className}`}>
+const Section = ({ className = '', children }) => (
+    <section className={`relative flex min-h-screen w-full flex-shrink-0 items-center justify-center px-4 py-20 md:px-8 lg:h-screen lg:w-screen ${className}`}>
+        <div className="relative z-10 w-full max-w-7xl">{children}</div>
+    </section>
+);
+
+const SmartLink = ({ href, className, children }) => (
+    <a href={href} target={href.startsWith('mailto:') ? undefined : '_blank'} rel={href.startsWith('mailto:') ? undefined : 'noreferrer'} className={className}>
         {children}
-    </div>
+    </a>
+);
+
+const CountUp = ({ value, suffix = '' }) => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        let frame;
+        const duration = 1200;
+        const start = performance.now();
+
+        const step = (time) => {
+            const progress = Math.min((time - start) / duration, 1);
+            setCount(Math.round(value * progress));
+            if (progress < 1) frame = requestAnimationFrame(step);
+        };
+
+        frame = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(frame);
+    }, [value]);
+
+    return <>{count}{suffix}</>;
+};
+
+const TerminalIntro = () => {
+    const [visibleLines, setVisibleLines] = useState(0);
+
+    useEffect(() => {
+        const timers = profile.terminalLines.map((_, index) => (
+            setTimeout(() => setVisibleLines(index + 1), 500 + index * 550)
+        ));
+
+        return () => timers.forEach(clearTimeout);
+    }, []);
+
+    return (
+        <Card className="overflow-hidden border-cyber-accent/25">
+            <div className="mb-4 flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                <span className="ml-3 text-[11px] uppercase tracking-[0.32em] text-cyber-yellow/80">Live Terminal</span>
+            </div>
+            <div className="space-y-3 font-mono text-sm leading-7 text-cyan-100">
+                {profile.terminalLines.slice(0, visibleLines).map((line, index) => (
+                    <MotionDiv
+                        key={line}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.35, delay: index * 0.05 }}
+                    >
+                        {line}
+                    </MotionDiv>
+                ))}
+                <div className="inline-flex h-5 w-2 animate-pulse rounded-sm bg-cyber-accent/80 align-middle" />
+            </div>
+        </Card>
+    );
+};
+
+const StatModal = ({ stat, onClose }) => (
+    <AnimatePresence>
+        {stat && (
+            <MotionDiv
+                className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 px-4 backdrop-blur-md"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={onClose}
+            >
+                <MotionDiv
+                    className="panel-surface w-full max-w-xl rounded-[30px] border-cyber-accent/25 p-6 shadow-[0_20px_80px_rgba(0,243,255,0.15)]"
+                    initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.96, y: 12 }}
+                    onClick={(event) => event.stopPropagation()}
+                >
+                    <div className="mb-5 flex items-start justify-between gap-4">
+                        <div>
+                            <p className="text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">{stat.label}</p>
+                            <h3 className="text-strong mt-3 text-3xl font-black">{stat.modalTitle}</h3>
+                        </div>
+                        <button onClick={onClose} className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-200 transition-colors hover:text-white" aria-label="Close modal">
+                            <X size={18} />
+                        </button>
+                    </div>
+                    <ul className="space-y-3">
+                        {stat.modalPoints.map((point) => (
+                            <li key={point} className="content-shell text-soft rounded-2xl px-4 py-4">
+                                {point}
+                            </li>
+                        ))}
+                    </ul>
+                </MotionDiv>
+            </MotionDiv>
+        )}
+    </AnimatePresence>
 );
 
 function App() {
     const containerRef = useRef(null);
+    const projectsRef = useRef(null);
     const { scrollXProgress, scrollYProgress } = useScroll({ container: containerRef });
-    const [isMobile, setIsMobile] = useState(false);
+    const [isCompact, setIsCompact] = useState(false);
+    const [activeStat, setActiveStat] = useState(null);
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+        const checkViewport = () => setIsCompact(window.innerWidth < 1024);
+        checkViewport();
+        window.addEventListener('resize', checkViewport);
+        return () => window.removeEventListener('resize', checkViewport);
     }, []);
 
     useEffect(() => {
-        // Initialize Lenis based on orientation
         const lenis = new Lenis({
-            orientation: isMobile ? 'vertical' : 'horizontal',
+            orientation: isCompact ? 'vertical' : 'horizontal',
             gestureOrientation: 'both',
             smoothWheel: true,
             wheelMultiplier: 1,
-            touchMultiplier: 2,
+            touchMultiplier: 1.4,
             wrapper: containerRef.current,
-            content: containerRef.current,
+            content: containerRef.current
         });
 
-        function raf(time) {
+        let frameId;
+        const raf = (time) => {
             lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+            frameId = requestAnimationFrame(raf);
+        };
 
-        requestAnimationFrame(raf);
+        frameId = requestAnimationFrame(raf);
 
-        return () => lenis.destroy();
-    }, [isMobile]);
+        return () => {
+            cancelAnimationFrame(frameId);
+            lenis.destroy();
+        };
+    }, [isCompact]);
 
-    const scrollProgress = isMobile ? scrollYProgress : scrollXProgress;
+    useEffect(() => {
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') setActiveStat(null);
+        };
+
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, []);
+
+    const scrollProgress = isCompact ? scrollYProgress : scrollXProgress;
+    const scrollToProjects = () => projectsRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' });
 
     return (
-        <div className="relative w-full h-screen overflow-hidden text-white font-sans selection:bg-cyber-pink selection:text-white">
-
-            <Background scrollProgress={scrollProgress} />
-            <Car scrollProgress={scrollProgress} />
+        <div className="relative h-screen w-full overflow-hidden text-white selection:bg-cyber-pink selection:text-white">
+            <Background scrollProgress={scrollProgress} isCompact={isCompact} />
+            <Car scrollProgress={scrollProgress} isCompact={isCompact} />
             <AudioPlayer />
+            <StatModal stat={activeStat} onClose={() => setActiveStat(null)} />
 
-            {/* Main Scroll Container */}
             <div
                 ref={containerRef}
-                className="absolute top-0 left-0 w-full h-full overflow-y-auto md:overflow-y-hidden md:overflow-x-auto flex flex-col md:flex-row"
+                className="absolute inset-0 flex h-full w-full flex-col overflow-y-auto lg:flex-row lg:overflow-x-auto lg:overflow-y-hidden"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-
-                {/* HERO SECTION */}
-                <Section className="text-center md:min-w-[100vw]">
-                    <div className="max-w-4xl z-10 space-y-6 whitespace-normal">
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
+                <Section className="pb-44 sm:pb-40 lg:min-w-[125vw] lg:pb-20">
+                    <div className="grid items-center gap-8 xl:grid-cols-[1.15fr_0.85fr]">
+                        <MotionDiv
+                            initial={{ opacity: 0, y: 24 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
+                            viewport={{ once: true, amount: 0.35 }}
+                            className="max-w-4xl"
                         >
-                            <h1 className="text-4xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyber-accent to-cyber-pink pb-4">
-                                TARANDEEP SINGH
+                            <div className="panel-surface mb-6 inline-flex items-center gap-2 rounded-full border-cyber-accent/20 bg-cyber-accent/8 px-4 py-2 text-sm text-cyan-100 shadow-[0_0_30px_rgba(0,243,255,0.08)]">
+                                <Sparkles size={16} className="text-cyber-accent" />
+                                Backend + AI engineer building systems, not just portfolios
+                            </div>
+
+                            <p className="mb-4 flex items-center gap-2 text-sm uppercase tracking-[0.28em] text-cyber-yellow/80">
+                                <MapPin size={15} />
+                                {profile.location}
+                            </p>
+
+                            <h1 className="max-w-5xl text-4xl font-black leading-[0.92] sm:text-5xl md:text-6xl lg:text-8xl">
+                                <span className="bg-gradient-to-r from-white via-cyan-100 to-cyber-accent bg-clip-text text-transparent">
+                                    {profile.name}
+                                </span>
                             </h1>
-                            <h2 className="text-lg md:text-3xl font-mono text-cyan-200 mt-2 font-bold drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
-                                {profile.role}
-                            </h2>
-                            <p className="mt-6 text-lg md:text-xl text-cyan-50 font-semibold max-w-2xl mx-auto drop-shadow-md bg-black/30 backdrop-blur-sm p-4 rounded-lg border border-white/10">
+
+                            <h2 className="text-strong mt-5 text-lg font-semibold text-cyan-100 sm:text-xl md:text-2xl lg:text-3xl">{profile.role}</h2>
+
+                            <p className="text-strong mt-6 max-w-3xl text-xl font-bold leading-8 sm:text-2xl sm:leading-9 lg:text-3xl lg:leading-[1.25]">
+                                {profile.hook}
+                            </p>
+
+                            <p className="text-soft mt-5 max-w-3xl text-base leading-7 sm:text-lg sm:leading-8">
+                                {profile.headline}
+                            </p>
+
+                            <p className="text-muted-strong mt-4 max-w-2xl text-sm leading-7 sm:text-base">
                                 {profile.tagline}
                             </p>
 
-                            <div className="flex justify-center gap-6 mt-10">
-                                <a href={profile.links.github} target="_blank" rel="noreferrer" className="hover:text-cyber-accent transition-colors">
-                                    <Github size={32} />
-                                </a>
-                                <a href={profile.links.linkedin} target="_blank" rel="noreferrer" className="hover:text-cyber-accent transition-colors">
-                                    <Linkedin size={32} />
-                                </a>
-                                <a href={profile.links.portfolio} target="" rel="noreferrer" className="hover:text-cyber-accent transition-colors">
-                                    <ExternalLink size={32} />
-                                </a>
+                            <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+                                <button
+                                    onClick={scrollToProjects}
+                                    className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-cyber-accent px-7 py-4 text-sm font-black uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(0,243,255,0.28)] transition-all hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(0,243,255,0.45)] sm:w-auto"
+                                >
+                                    <Rocket size={16} className="transition-transform group-hover:-translate-y-0.5" />
+                                    See What I&apos;ve Built
+                                </button>
+                                <SmartLink href={profile.links.github} className="w-full rounded-full border border-white/15 bg-white/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:border-cyber-accent/50 hover:text-cyber-accent sm:w-auto">
+                                    GitHub
+                                </SmartLink>
+                                <SmartLink href={profile.links.linkedin} className="w-full rounded-full border border-white/15 bg-white/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:border-cyber-pink/50 hover:text-cyber-pink sm:w-auto">
+                                    LinkedIn
+                                </SmartLink>
                             </div>
 
-                            <div className="mt-20 animate-pulse text-cyber-yellow text-sm font-mono">
-                                {isMobile ? "SCROLL DOWN" : "SCROLL TO DRIVE"} <ArrowRight className={`inline ml-2 ${isMobile ? "rotate-90" : ""}`} />
+                            <div className="mt-10 flex items-center gap-5 text-xs uppercase tracking-[0.3em] text-cyber-yellow/80 sm:text-sm">
+                                <span>{isCompact ? 'Scroll down' : 'Scroll to drive'}</span>
+                                <ArrowRight className={isCompact ? 'rotate-90' : ''} />
                             </div>
-                        </motion.div>
+                        </MotionDiv>
+
+                        <div className="grid gap-5 xl:justify-self-end">
+                            <TerminalIntro />
+
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                {profile.stats.map((stat, index) => (
+                                    <MotionDiv
+                                        key={stat.label}
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.55, delay: index * 0.08 }}
+                                        viewport={{ once: true, amount: 0.35 }}
+                                    >
+                                        <button
+                                            onClick={() => setActiveStat(stat)}
+                                            className="panel-surface group h-full w-full rounded-[28px] border-cyber-accent/18 bg-gradient-to-br from-[#090c18]/95 to-[#0d1d29]/78 p-5 text-left transition-all hover:-translate-y-1 hover:border-cyber-accent/45 hover:shadow-[0_0_32px_rgba(0,243,255,0.16)]"
+                                        >
+                                            <p className="text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">{stat.label}</p>
+                                            <p className="text-strong mt-3 text-3xl font-black sm:text-4xl">
+                                                <CountUp value={stat.value} suffix={stat.suffix} />
+                                            </p>
+                                            <p className="text-soft mt-2 text-sm">{stat.detail}</p>
+                                            <p className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-cyber-accent transition-colors group-hover:text-white">
+                                                tap for proof
+                                                <ChevronRight size={14} />
+                                            </p>
+                                        </button>
+                                    </MotionDiv>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </Section>
 
-                {/* EDUCATION SECTION */}
-                <Section className="md:min-w-[100vw]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full z-10 md:mt-[-100px] whitespace-normal px-4">
-                        {profile.education.map((edu, idx) => (
-                            <Card key={idx} title={edu.degree}>
-                                <p className="text-xl text-white font-semibold">{edu.institution}</p>
-                                <p className="text-gray-400 font-mono mt-2">{edu.period}</p>
-                                <p className="text-cyber-pink mt-4">{edu.details}</p>
+                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw] lg:pb-20">
+                    <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+                        <Card title="What I’ve Built" eyebrow="Proof Fast" className="border-cyber-accent/20 bg-gradient-to-br from-[#090c18]/95 to-[#0d1d29]/78">
+                            <div className="grid gap-4">
+                                {profile.proofLines.map((line, index) => {
+                                    const Icon = proofIcons[index] ?? Cpu;
+                                    return (
+                                        <MotionDiv
+                                            key={line}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.45, delay: index * 0.08 }}
+                                            viewport={{ once: true, amount: 0.35 }}
+                                            className="content-shell flex gap-4 rounded-3xl p-4"
+                                        >
+                                            <div className="mt-1 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-cyber-accent/20 bg-cyber-accent/8 text-cyber-accent">
+                                                <Icon size={18} />
+                                            </div>
+                                            <p className="text-soft text-sm leading-7 sm:text-base">{line}</p>
+                                        </MotionDiv>
+                                    );
+                                })}
+                            </div>
+                        </Card>
+
+                        <div className="grid gap-6">
+                            <Card title="About Me" eyebrow="Positioning">
+                                <div className="text-soft space-y-4 text-sm leading-7 sm:text-base sm:leading-8">
+                                    {profile.about.map((paragraph) => (
+                                        <p key={paragraph}>{paragraph}</p>
+                                    ))}
+                                </div>
                             </Card>
-                        ))}
+
+                            <Card title="Currently Exploring" eyebrow="Personality">
+                                <div className="space-y-3">
+                                    {profile.personality.map((item) => (
+                                        <div key={item} className="content-shell text-soft rounded-2xl border-cyber-pink/15 px-4 py-4 text-sm leading-7">
+                                            {item}
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        </div>
                     </div>
                 </Section>
 
-                {/* EXPERIENCE SECTION */}
-                <div className="flex-shrink-0 w-full md:min-w-[150vw] md:h-screen flex flex-col md:flex-row items-center relative py-20 md:py-0">
-                    <div className="md:absolute top-10 md:top-20 md:left-20 text-3xl md:text-4xl font-black text-cyber-accent border-b-4 border-cyber-pink pb-2 mb-10 md:mb-0">
-                        CAREER TIMELINE
-                    </div>
-
-                    <div className="flex flex-col md:flex-row gap-8 md:gap-16 px-4 md:px-32 md:mt-[-50px] w-full items-center whitespace-normal">
-                        {profile.experience.map((exp, idx) => (
-                            <motion.div
-                                key={idx}
-                                className="w-full md:w-[500px] flex-shrink-0"
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ margin: "-50px" }}
-                            >
-                                <Card title={exp.role}>
-                                    <h4 className="text-lg text-cyber-yellow mb-2">{exp.company}</h4>
-                                    <span className="text-xs font-mono text-gray-500">{exp.period}</span>
-                                    <ul className="mt-4 space-y-2 text-gray-300 text-sm list-disc pl-5">
-                                        {exp.points.map((p, i) => <li key={i}>{p}</li>)}
-                                    </ul>
-                                    <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap gap-2">
-                                        {exp.tech.split(',').map((t, i) => (
-                                            <span key={i} className="px-2 py-1 bg-white/5 rounded text-xs text-cyber-accent border border-cyber-accent/20">
-                                                {t.trim()}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* PROJECTS SECTION */}
-                <div className="flex-shrink-0 w-full md:min-w-[200vw] md:h-screen flex flex-col md:flex-row items-center relative py-20 md:py-0">
-                    <div className="md:absolute top-10 md:top-20 md:left-20 text-3xl md:text-4xl font-black text-cyber-accent border-b-4 border-cyber-pink pb-2 mb-10 md:mb-0">
-                        MISSION LOGS
-                    </div>
-
-                    <div className="flex flex-col md:flex-row gap-8 md:gap-12 px-4 md:px-32 md:mt-[-100px] items-center whitespace-normal w-full">
-                        {profile.projects.map((proj, idx) => (
-                            <div key={idx} className="w-full md:w-[450px] flex-shrink-0 group relative">
-                                <div className="absolute inset-0 bg-cyber-pink/20 blur-xl group-hover:bg-cyber-pink/40 transition-all rounded-xl" />
-                                <Card title={proj.title} className="relative bg-black/80 backdrop-blur-xl border-cyber-pink/30 hover:border-cyber-pink transition-colors">
-                                    <p className="text-gray-300 mb-4 h-auto md:h-20 overflow-hidden">{proj.description}</p>
-                                    <div className="flex flex-wrap gap-2 mb-6">
-                                        {proj.tech.map((t, i) => (
-                                            <span key={i} className="text-xs font-mono text-cyber-yellow">#{t}</span>
-                                        ))}
-                                    </div>
-                                    {proj.link && (
-                                        <a href={proj.link} target="_blank" rel="noreferrer" className="inline-flex items-center text-cyber-accent hover:text-white transition-colors gap-2 text-sm font-bold uppercase tracking-wider">
-                                            View Project <ExternalLink size={16} />
-                                        </a>
-                                    )}
-                                </Card>
+                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw] lg:pb-20">
+                    <div className="w-full">
+                        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
+                            <div>
+                                <p className="text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">Experience</p>
+                                <h2 className="mt-3 text-3xl font-black sm:text-4xl lg:text-5xl">Career Timeline</h2>
                             </div>
-                        ))}
-                    </div>
-                </div>
+                            <p className="text-muted-strong max-w-xl text-sm leading-7 lg:text-right">
+                                Real internship work, open-source collaboration, and backend/AI systems built with production-oriented thinking.
+                            </p>
+                        </div>
 
-                {/* SKILLS & ACHIEVEMENTS */}
-                <Section className="md:min-w-[100vw]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl w-full z-10 md:mt-[-50px] whitespace-normal px-4">
-                        <Card title="Tech Stack">
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            {profile.experience.map((exp, index) => (
+                                <MotionDiv
+                                    key={`${exp.company}-${exp.role}`}
+                                    initial={{ opacity: 0, y: 24 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                                    viewport={{ once: true, amount: 0.3 }}
+                                >
+                                    <Card title={exp.role} eyebrow={exp.company} className="h-full">
+                                        <p className="text-sm uppercase tracking-[0.25em] text-cyber-accent/85">{exp.period}</p>
+                                        <ul className="mt-5 space-y-3">
+                                            {exp.points.map((point) => (
+                                                <li key={point} className="content-shell text-soft rounded-2xl px-4 py-3">
+                                                    {point}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="mt-6 flex flex-wrap gap-2">
+                                            {exp.tech.split(',').map((item) => (
+                                                <span key={item} className="rounded-full border border-cyber-accent/20 bg-cyber-accent/8 px-3 py-1 text-sm text-cyber-accent">
+                                                    {item.trim()}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </Card>
+                                </MotionDiv>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                <Section className="pb-36 sm:pb-32 lg:min-w-[180vw] lg:pb-20">
+                    <div ref={projectsRef} className="w-full" id="projects">
+                        <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                            <div>
+                                <p className="text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">Featured Work</p>
+                                <h2 className="text-strong mt-3 text-3xl font-black sm:text-4xl lg:text-5xl">Projects That Prove I Can Build</h2>
+                            </div>
+                            <div className="panel-surface inline-flex items-center gap-2 rounded-full border-cyber-pink/20 bg-cyber-pink/8 px-4 py-2 text-xs uppercase tracking-[0.24em] text-cyan-100">
+                                <Gauge size={14} />
+                                Built for proof, not filler
+                            </div>
+                        </div>
+
+                        <div className="grid gap-6 sm:grid-cols-2 2xl:grid-cols-4">
+                            {profile.projects.map((project, index) => (
+                                <MotionDiv
+                                    key={project.title}
+                                    initial={{ opacity: 0, y: 24 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                                    viewport={{ once: true, amount: 0.2 }}
+                                >
+                                    <Card title={project.title} eyebrow={project.eyebrow} className="flex h-full flex-col border-cyber-pink/20 bg-gradient-to-b from-[#090c18]/95 to-[#1a0d2b]/76 transition-transform hover:-translate-y-1">
+                                        <p className="text-soft">{project.description}</p>
+                                        <p className="content-shell mt-4 rounded-2xl border-cyber-accent/15 px-4 py-4 text-sm leading-7 text-cyan-50">
+                                            {project.impact}
+                                        </p>
+                                        <div className="mt-5 flex flex-wrap gap-2">
+                                            {project.tech.map((tech) => (
+                                                <span key={tech} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cyber-yellow">
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div className="mt-6 flex items-center gap-3 pt-2">
+                                            <SmartLink href={project.link} className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-cyber-accent transition-colors hover:text-white">
+                                                Open Project
+                                                <ExternalLink size={16} />
+                                            </SmartLink>
+                                        </div>
+                                    </Card>
+                                </MotionDiv>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                <Section className="pb-36 sm:pb-32 lg:min-w-[150vw] lg:pb-20">
+                    <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr_0.95fr]">
+                        <Card title="Tech Stack" eyebrow="Skills">
                             <div className="flex flex-wrap gap-3">
-                                {profile.skills.map((skill, i) => (
-                                    <span key={i} className="px-3 py-1 bg-cyber-accent/10 border border-cyber-accent/30 rounded-full text-cyber-accent text-sm">
+                                {profile.skills.map((skill, index) => (
+                                    <MotionDiv
+                                        key={skill}
+                                        whileHover={{ y: -4, scale: 1.02 }}
+                                        transition={{ duration: 0.18 }}
+                                        className="panel-surface rounded-full border-cyber-accent/22 bg-cyber-accent/8 px-4 py-2 text-sm text-cyan-50"
+                                        style={{ animationDelay: `${index * 80}ms` }}
+                                    >
                                         {skill}
-                                    </span>
+                                    </MotionDiv>
                                 ))}
                             </div>
                         </Card>
-                        <Card title="Honors & Achievements">
+
+                        <Card title="Open Source Contributions" eyebrow="Proof of Collaboration">
+                            <div className="space-y-4">
+                                {profile.openSource.map((item) => (
+                                    <SmartLink
+                                        key={item.title}
+                                        href={item.link}
+                                        className="content-shell flex items-start gap-3 rounded-2xl px-4 py-4 transition-colors hover:border-cyber-pink/35 hover:bg-cyber-pink/8"
+                                    >
+                                        <FolderGit2 className="mt-0.5 flex-shrink-0 text-cyber-pink" size={18} />
+                                        <span>
+                                            <span className="text-strong block font-semibold">{item.title}</span>
+                                            <span className="text-muted-strong mt-1 block text-sm leading-6">{item.description}</span>
+                                        </span>
+                                    </SmartLink>
+                                ))}
+                            </div>
+                        </Card>
+
+                        <Card title="Honors & Achievements" eyebrow="Signals">
                             <ul className="space-y-4">
-                                {profile.achievements.map((ach, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <Award className="text-cyber-yellow flex-shrink-0" />
-                                        <span className="text-gray-200">{ach}</span>
+                                {profile.achievements.map((achievement) => (
+                                    <li key={achievement} className="content-shell flex items-start gap-3 rounded-2xl px-4 py-4">
+                                        <Award className="mt-0.5 flex-shrink-0 text-cyber-yellow" size={18} />
+                                        <span className="text-soft">{achievement}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -208,31 +489,34 @@ function App() {
                     </div>
                 </Section>
 
-                {/* FINAL CTA */}
-                <Section className="md:min-w-[100vw] bg-black/60 relative">
-                    <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-cyber-pink/20 to-transparent pointer-events-none" />
-                    <div className="text-center z-10 whitespace-normal px-4">
-                        <h2 className="text-4xl md:text-6xl font-black text-white mb-8">
-                            MISSION COMPLETE
-                        </h2>
-                        <p className="text-lg md:text-xl text-gray-400 mb-12">
-                            Ready to deploy Tarandeep to your team?
-                        </p>
-                        <div className="flex flex-col gap-4 items-center">
-                            <a href={profile.links.email} className="px-12 py-4 bg-cyber-accent text-black font-black text-xl rounded-full hover:scale-105 hover:shadow-[0_0_30px_#00f3ff] transition-all">
-                                INITIATE CONTACT
-                            </a>
-                            <div className="flex flex-wrap justify-center gap-6 mt-8">
-                                {Object.entries(profile.links).map(([key, url]) => (
-                                    <a key={key} href={url} target="_blank" rel="noreferrer" className="text-gray-500 hover:text-white uppercase text-sm font-mono tracking-widest">
-                                        {key}
-                                    </a>
-                                ))}
+                <Section className="pb-36 sm:pb-32 lg:min-w-[110vw] lg:pb-20">
+                    <Card className="overflow-hidden border-cyber-accent/20 bg-gradient-to-r from-[#080b17]/96 via-[#090d18]/92 to-[#0d2330]/78">
+                        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+                            <div>
+                                <p className="text-[11px] uppercase tracking-[0.35em] text-cyber-yellow/75">Contact</p>
+                                <h2 className="text-strong mt-3 text-3xl font-black sm:text-4xl lg:text-6xl">Let&apos;s build something serious.</h2>
+                                <p className="text-soft mt-5 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8">
+                                    I&apos;m targeting backend and AI engineering opportunities where I can contribute to real products, reliable systems, and applied LLM workflows.
+                                </p>
+                            </div>
+
+                            <div className="grid gap-3">
+                                <SmartLink href={profile.links.contact} className="inline-flex items-center justify-center gap-3 rounded-full bg-cyber-accent px-6 py-4 text-sm font-bold uppercase tracking-[0.2em] text-black transition-transform hover:scale-[1.02] hover:shadow-[0_0_32px_rgba(0,243,255,0.28)]">
+                                    <Mail size={18} />
+                                    Contact Me
+                                </SmartLink>
+                                <SmartLink href={profile.links.github} className="inline-flex items-center justify-center gap-3 rounded-full border border-white/12 bg-white/5 px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white">
+                                    <Github size={18} />
+                                    GitHub
+                                </SmartLink>
+                                <SmartLink href={profile.links.linkedin} className="inline-flex items-center justify-center gap-3 rounded-full border border-white/12 bg-white/5 px-6 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white">
+                                    <Linkedin size={18} />
+                                    LinkedIn
+                                </SmartLink>
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 </Section>
-
             </div>
         </div>
     );
