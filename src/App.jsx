@@ -452,7 +452,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[180vw]">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[165vw] 2xl:min-w-[150vw]">
                     <div ref={projectsRef} className="w-full" id="projects">
                         <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                             <div>
@@ -477,29 +477,31 @@ function App() {
                                     />
                                 </label>
 
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-cyber-yellow/75">
+                                <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+                                    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-cyber-yellow/75 sm:flex-shrink-0">
                                         <SlidersHorizontal size={14} />
                                         Filter
                                     </span>
-                                    {projectFilters.map((filter) => (
-                                        <button
-                                            key={filter}
-                                            onClick={() => setActiveProjectFilter(filter)}
-                                            className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition-all ${
-                                                activeProjectFilter === filter
-                                                    ? 'bg-cyber-accent text-black shadow-[0_0_24px_rgba(125,249,255,0.28)]'
-                                                    : 'content-shell text-cyan-100 hover:border-cyber-accent/35 hover:text-white'
-                                            }`}
-                                        >
-                                            {filter}
-                                        </button>
-                                    ))}
+                                    <div className="-mx-1 flex min-w-0 gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible">
+                                        {projectFilters.map((filter) => (
+                                            <button
+                                                key={filter}
+                                                onClick={() => setActiveProjectFilter(filter)}
+                                                className={`flex-shrink-0 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition-all ${
+                                                    activeProjectFilter === filter
+                                                        ? 'bg-cyber-accent text-black shadow-[0_0_24px_rgba(125,249,255,0.28)]'
+                                                        : 'content-shell text-cyan-100 hover:border-cyber-accent/35 hover:text-white'
+                                                }`}
+                                            >
+                                                {filter}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="mt-4 flex items-center justify-between gap-4 text-xs uppercase tracking-[0.22em] text-white/55">
-                                <span>{filteredProjects.length} results</span>
+                            <div className="mt-4 flex flex-col gap-2 text-xs uppercase tracking-[0.22em] text-white/55 sm:flex-row sm:items-center sm:justify-between">
+                                <span>{filteredProjects.length} of {profile.projects.length} featured repositories</span>
                                 <span className="hidden md:block">Secret mode available for curious visitors</span>
                             </div>
                         </div>
@@ -529,7 +531,7 @@ function App() {
                                         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyber-accent/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                         <div className="mb-4 flex items-center justify-between gap-3">
                                             <span className="rounded-full border border-cyber-accent/18 bg-cyber-accent/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-cyan-100">
-                                                {hoveredProject === project.title ? 'Preview Active' : 'System Build'}
+                                                {hoveredProject === project.title ? 'Preview Active' : (project.liveLink ? 'Live + Code' : 'Repository')}
                                             </span>
                                             <div className="flex items-center gap-1">
                                                 {[0, 1, 2].map((bar) => (
@@ -557,10 +559,21 @@ function App() {
                                                 </MotionDiv>
                                             ))}
                                         </div>
-                                        <div className="mt-6 flex items-center gap-3 pt-2">
-                                            <SmartLink href={project.link} className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-cyber-accent transition-colors hover:text-white">
-                                                Open Project
-                                                <ExternalLink size={16} />
+                                        <div className="mt-6 grid gap-3 pt-2 sm:grid-cols-2">
+                                            {project.liveLink && (
+                                                <SmartLink href={project.liveLink} className="inline-flex items-center justify-center gap-2 rounded-full bg-cyber-accent px-4 py-3 text-center text-xs font-black uppercase tracking-[0.2em] text-black transition-transform hover:scale-[1.02]">
+                                                    Live Demo
+                                                    <ExternalLink size={15} />
+                                                </SmartLink>
+                                            )}
+                                            <SmartLink
+                                                href={project.repoLink}
+                                                className={`inline-flex items-center justify-center gap-2 rounded-full border border-white/12 px-4 py-3 text-center text-xs font-semibold uppercase tracking-[0.2em] text-cyber-accent transition-colors hover:border-cyber-accent/40 hover:text-white ${
+                                                    project.liveLink ? 'bg-white/5' : 'bg-cyber-accent/10'
+                                                }`}
+                                            >
+                                                GitHub
+                                                <Github size={15} />
                                             </SmartLink>
                                         </div>
                                     </Card>
