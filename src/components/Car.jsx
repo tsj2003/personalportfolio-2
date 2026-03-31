@@ -4,12 +4,12 @@ const MotionDiv = motion.div;
 
 const Car = ({ scrollProgress, isCompact }) => {
     // Drive across screen from left to right as user scrolls
-    const x = useTransform(scrollProgress, [0, 1], isCompact ? ["0vw", "18vw"] : ["0vw", "70vw"]);
+    const x = useTransform(scrollProgress, [0, 1], isCompact ? ["0vw", "18vw"] : ["0vw", "68vw"]);
 
     return (
         <MotionDiv
             style={{ x }}
-            className="fixed bottom-24 left-3 z-40 pointer-events-none sm:bottom-28 sm:left-4 lg:bottom-10 lg:left-20 lg:z-50"
+            className="fixed bottom-20 left-3 z-0 pointer-events-none sm:bottom-24 sm:left-4 lg:bottom-6 lg:left-16"
         >
             {/* Spotlight Effect - User requested "vibe" matching the reference */}
             <div className="absolute -top-10 -left-8 h-[180px] w-[180px] rounded-full bg-blue-500/10 blur-[60px] mix-blend-screen pointer-events-none sm:-top-14 sm:-left-12 sm:h-[260px] sm:w-[260px] lg:-top-20 lg:-left-20 lg:h-[500px] lg:w-[500px] lg:blur-[100px]" />
@@ -24,7 +24,7 @@ const Car = ({ scrollProgress, isCompact }) => {
                 <img
                     src="/car_transparent.png"
                     alt="Player Car"
-                    className="w-28 sm:w-36 lg:w-64 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                    className="w-28 sm:w-36 lg:w-56 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                     style={{
                         imageRendering: 'pixelated',
                         filter: 'contrast(1.1) brightness(1.1)'
@@ -36,7 +36,7 @@ const Car = ({ scrollProgress, isCompact }) => {
                     style={{ transform: 'rotate(-5deg)' }} />
 
                 {/* Taillights Trail */}
-                <div className="absolute top-[40%] right-[85%] h-1.5 w-14 bg-pink-500/80 blur-md opacity-60 sm:w-20 lg:h-2 lg:w-32" />
+                <div className="absolute top-[40%] right-[85%] h-1.5 w-14 bg-cyber-pink/80 blur-md opacity-60 sm:w-20 lg:h-2 lg:w-28" />
 
                 {/* Glow effect under car */}
                 <div className="absolute -bottom-3 left-2 right-2 h-4 rounded-full bg-cyan-500/40 blur-xl opacity-60 animate-pulse sm:left-3 sm:right-3 lg:-bottom-4 lg:left-4 lg:right-4 lg:h-6" />

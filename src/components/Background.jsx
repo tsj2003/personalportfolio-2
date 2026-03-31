@@ -55,14 +55,15 @@ const Background = ({ scrollProgress, isCompact }) => {
             {/* 3. Road / Ground Layer (Parallax Fast) */}
             <MotionDiv
                 style={{ backgroundPositionX: roadX }}
-                className="absolute bottom-0 left-0 z-10 h-24 w-full sm:h-28 lg:h-48"
+                className="absolute bottom-0 left-0 z-10 h-24 w-full sm:h-28 lg:h-36"
             >
-                <div className="w-full h-full bg-[url('/road.png')] bg-repeat-x bg-contain bg-bottom mix-blend-screen opacity-70 blur-[0.4px]" />
+                <div className="w-full h-full bg-[url('/road.png')] bg-repeat-x bg-contain bg-bottom mix-blend-screen opacity-64 blur-[0.4px]" />
             </MotionDiv>
 
             {/* Overlay Gradient for integration */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(7,8,20,0.62),rgba(5,6,16,0.82)_45%,rgba(4,4,10,0.92))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(7,8,20,0.62),rgba(5,6,16,0.82)_45%,rgba(4,4,10,0.96))]" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/20" />
+            <div className="absolute bottom-0 left-0 h-44 w-full bg-gradient-to-t from-black/90 via-black/55 to-transparent lg:h-56" />
         </div>
     );
 };

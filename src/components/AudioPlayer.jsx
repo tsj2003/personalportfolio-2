@@ -86,7 +86,7 @@ const AudioPlayer = () => {
     }, [trackIndex]);
 
     return (
-        <div className="fixed inset-x-3 bottom-3 z-50 flex items-end justify-end gap-2 sm:inset-x-auto sm:bottom-4 sm:right-4 md:bottom-6 md:right-6">
+        <div className="fixed inset-x-3 bottom-4 z-50 flex items-end justify-end gap-2 sm:inset-x-auto sm:bottom-6 sm:right-4 md:right-6 lg:bottom-10">
             <AnimatePresence>
                 {isPlaying && (
                     <MotionDiv
@@ -111,7 +111,7 @@ const AudioPlayer = () => {
                 )}
             </AnimatePresence>
 
-            <div className="w-full max-w-[292px] rounded-[22px] border border-cyber-pink/35 bg-black/75 px-3 py-2.5 shadow-[0_0_24px_rgba(188,19,254,0.22)] backdrop-blur-xl sm:max-w-[320px]">
+            <div className="w-full max-w-[292px] rounded-[22px] border border-cyber-pink/35 bg-black/78 px-3 py-2.5 shadow-[0_0_24px_rgba(46,189,255,0.18)] backdrop-blur-xl sm:max-w-[320px]">
                 <div className="mb-2 flex items-center justify-between gap-2">
                     <div className="min-w-0">
                         <p className="text-[9px] uppercase tracking-[0.24em] text-cyber-yellow/80">Now Playing</p>

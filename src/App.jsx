@@ -38,7 +38,7 @@ const Card = ({ title, eyebrow, children, className = '' }) => (
 );
 
 const Section = ({ className = '', children }) => (
-    <section className={`relative flex min-h-screen w-full flex-shrink-0 items-center justify-center px-4 py-20 md:px-8 lg:h-screen lg:w-screen ${className}`}>
+    <section className={`relative flex min-h-screen w-full flex-shrink-0 items-center justify-center px-4 py-20 md:px-8 lg:h-screen lg:w-screen lg:items-start lg:pt-16 lg:pb-44 ${className}`}>
         <div className="relative z-10 w-full max-w-7xl">{children}</div>
     </section>
 );
@@ -208,7 +208,7 @@ function App() {
                 className="absolute inset-0 flex h-full w-full flex-col overflow-y-auto lg:flex-row lg:overflow-x-auto lg:overflow-y-hidden"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-                <Section className="pb-44 sm:pb-40 lg:min-w-[125vw] lg:pb-20">
+                <Section className="pb-44 sm:pb-40 lg:min-w-[125vw]">
                     <div className="grid items-center gap-8 xl:grid-cols-[1.15fr_0.85fr]">
                         <MotionDiv
                             initial={{ opacity: 0, y: 24 }}
@@ -247,10 +247,10 @@ function App() {
                                 {profile.tagline}
                             </p>
 
-                            <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+                            <div className="mt-10 grid gap-3 sm:flex sm:flex-wrap">
                                 <button
                                     onClick={scrollToProjects}
-                                    className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-cyber-accent px-7 py-4 text-sm font-black uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(0,243,255,0.28)] transition-all hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(0,243,255,0.45)] sm:w-auto"
+                                    className="group inline-flex w-full items-center justify-center gap-3 rounded-full bg-cyber-accent px-7 py-4 text-sm font-black uppercase tracking-[0.22em] text-black shadow-[0_0_35px_rgba(125,249,255,0.28)] transition-all hover:scale-[1.03] hover:shadow-[0_0_50px_rgba(125,249,255,0.45)] sm:w-auto"
                                 >
                                     <Rocket size={16} className="transition-transform group-hover:-translate-y-0.5" />
                                     See What I&apos;ve Built
@@ -263,7 +263,7 @@ function App() {
                                 </SmartLink>
                             </div>
 
-                            <div className="mt-10 flex items-center gap-5 text-xs uppercase tracking-[0.3em] text-cyber-yellow/80 sm:text-sm">
+                            <div className="mt-12 flex items-center gap-5 text-xs uppercase tracking-[0.3em] text-cyber-yellow/80 sm:text-sm lg:mt-16">
                                 <span>{isCompact ? 'Scroll down' : 'Scroll to drive'}</span>
                                 <ArrowRight className={isCompact ? 'rotate-90' : ''} />
                             </div>
@@ -302,7 +302,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw] lg:pb-20">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw]">
                     <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
                         <Card title="What I’ve Built" eyebrow="Proof Fast" className="border-cyber-accent/20 bg-gradient-to-br from-[#090c18]/95 to-[#0d1d29]/78">
                             <div className="grid gap-4">
@@ -349,7 +349,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw] lg:pb-20">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[145vw]">
                     <div className="w-full">
                         <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-6">
                             <div>
@@ -393,7 +393,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[180vw] lg:pb-20">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[180vw]">
                     <div ref={projectsRef} className="w-full" id="projects">
                         <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                             <div>
@@ -415,7 +415,7 @@ function App() {
                                     transition={{ duration: 0.45, delay: index * 0.08 }}
                                     viewport={{ once: true, amount: 0.2 }}
                                 >
-                                    <Card title={project.title} eyebrow={project.eyebrow} className="flex h-full flex-col border-cyber-pink/20 bg-gradient-to-b from-[#090c18]/95 to-[#1a0d2b]/76 transition-transform hover:-translate-y-1">
+                                    <Card title={project.title} eyebrow={project.eyebrow} className="flex h-full flex-col border-cyber-pink/20 bg-gradient-to-b from-[#08111d]/96 to-[#0d2330]/76 transition-transform hover:-translate-y-1">
                                         <p className="text-soft">{project.description}</p>
                                         <p className="content-shell mt-4 rounded-2xl border-cyber-accent/15 px-4 py-4 text-sm leading-7 text-cyan-50">
                                             {project.impact}
@@ -440,7 +440,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[150vw] lg:pb-20">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[150vw]">
                     <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr_0.95fr]">
                         <Card title="Tech Stack" eyebrow="Skills">
                             <div className="flex flex-wrap gap-3">
@@ -489,7 +489,7 @@ function App() {
                     </div>
                 </Section>
 
-                <Section className="pb-36 sm:pb-32 lg:min-w-[110vw] lg:pb-20">
+                <Section className="pb-36 sm:pb-32 lg:min-w-[110vw]">
                     <Card className="overflow-hidden border-cyber-accent/20 bg-gradient-to-r from-[#080b17]/96 via-[#090d18]/92 to-[#0d2330]/78">
                         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
                             <div>
