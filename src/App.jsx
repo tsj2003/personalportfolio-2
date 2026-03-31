@@ -16,7 +16,10 @@ import {
     Bot,
     Cpu,
     Database,
-    Gauge
+    Gauge,
+    Search,
+    SlidersHorizontal,
+    WandSparkles
 } from 'lucide-react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -148,9 +151,15 @@ const StatModal = ({ stat, onClose }) => (
 function App() {
     const containerRef = useRef(null);
     const projectsRef = useRef(null);
+    const secretBufferRef = useRef([]);
     const { scrollXProgress, scrollYProgress } = useScroll({ container: containerRef });
     const [isCompact, setIsCompact] = useState(false);
     const [activeStat, setActiveStat] = useState(null);
+    const [projectQuery, setProjectQuery] = useState('');
+    const [activeProjectFilter, setActiveProjectFilter] = useState('All');
+    const [hoveredProject, setHoveredProject] = useState(null);
+    const [hyperdriveMode, setHyperdriveMode] = useState(false);
+    const [showHyperdriveToast, setShowHyperdriveToast] = useState(false);
 
     useEffect(() => {
         const checkViewport = () => setIsCompact(window.innerWidth < 1024);
@@ -193,15 +202,65 @@ function App() {
         return () => window.removeEventListener('keydown', onKeyDown);
     }, []);
 
+    useEffect(() => {
+        const secretCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+        const onSecretKey = (event) => {
+            const tagName = event.target?.tagName?.toLowerCase();
+            if (tagName === 'input' || tagName === 'textarea') return;
+
+            const nextKey = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+            secretBufferRef.current = [...secretBufferRef.current, nextKey].slice(-secretCode.length);
+
+            const matched = secretCode.every((key, index) => secretBufferRef.current[index] === key);
+            if (!matched) return;
+
+            setHyperdriveMode((current) => !current);
+            setShowHyperdriveToast(true);
+            secretBufferRef.current = [];
+        };
+
+        window.addEventListener('keydown', onSecretKey);
+        return () => window.removeEventListener('keydown', onSecretKey);
+    }, []);
+
+    useEffect(() => {
+        if (!showHyperdriveToast) return undefined;
+        const timer = setTimeout(() => setShowHyperdriveToast(false), 2200);
+        return () => clearTimeout(timer);
+    }, [showHyperdriveToast]);
+
     const scrollProgress = isCompact ? scrollYProgress : scrollXProgress;
     const scrollToProjects = () => projectsRef.current?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'start' });
+    const projectFilters = ['All', ...new Set(profile.projects.flatMap((project) => project.tech))];
+    const normalizedQuery = projectQuery.trim().toLowerCase();
+    const filteredProjects = profile.projects.filter((project) => {
+        const matchesFilter = activeProjectFilter === 'All' || project.tech.includes(activeProjectFilter);
+        const searchTarget = `${project.title} ${project.description} ${project.impact} ${project.tech.join(' ')}`.toLowerCase();
+        const matchesQuery = !normalizedQuery || searchTarget.includes(normalizedQuery);
+        return matchesFilter && matchesQuery;
+    });
 
     return (
-        <div className="relative h-screen w-full overflow-hidden text-white selection:bg-cyber-pink selection:text-white">
+        <div className={`relative h-screen w-full overflow-hidden text-white selection:bg-cyber-pink selection:text-white ${hyperdriveMode ? 'hyperdrive-mode' : ''}`}>
             <Background scrollProgress={scrollProgress} isCompact={isCompact} />
             <Car scrollProgress={scrollProgress} isCompact={isCompact} />
             <AudioPlayer />
             <StatModal stat={activeStat} onClose={() => setActiveStat(null)} />
+
+            <AnimatePresence>
+                {showHyperdriveToast && (
+                    <MotionDiv
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -18 }}
+                        className="panel-surface fixed left-1/2 top-5 z-[80] flex -translate-x-1/2 items-center gap-3 rounded-full border-cyber-accent/30 px-5 py-3 text-sm text-cyan-100 shadow-[0_0_30px_rgba(125,249,255,0.18)]"
+                    >
+                        <WandSparkles size={16} className="text-cyber-accent" />
+                        Hyperdrive {hyperdriveMode ? 'engaged' : 'disengaged'}
+                    </MotionDiv>
+                )}
+            </AnimatePresence>
 
             <div
                 ref={containerRef}
@@ -406,8 +465,54 @@ function App() {
                             </div>
                         </div>
 
+                        <div className="panel-surface mb-6 rounded-[28px] border-cyber-accent/14 bg-[#08111d]/88 p-4">
+                            <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr] xl:items-center">
+                                <label className="content-shell flex items-center gap-3 rounded-2xl px-4 py-3">
+                                    <Search size={18} className="text-cyber-accent" />
+                                    <input
+                                        value={projectQuery}
+                                        onChange={(event) => setProjectQuery(event.target.value)}
+                                        placeholder="Search projects, systems, or technologies"
+                                        className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/45"
+                                    />
+                                </label>
+
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-cyber-yellow/75">
+                                        <SlidersHorizontal size={14} />
+                                        Filter
+                                    </span>
+                                    {projectFilters.map((filter) => (
+                                        <button
+                                            key={filter}
+                                            onClick={() => setActiveProjectFilter(filter)}
+                                            className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition-all ${
+                                                activeProjectFilter === filter
+                                                    ? 'bg-cyber-accent text-black shadow-[0_0_24px_rgba(125,249,255,0.28)]'
+                                                    : 'content-shell text-cyan-100 hover:border-cyber-accent/35 hover:text-white'
+                                            }`}
+                                        >
+                                            {filter}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="mt-4 flex items-center justify-between gap-4 text-xs uppercase tracking-[0.22em] text-white/55">
+                                <span>{filteredProjects.length} results</span>
+                                <span className="hidden md:block">Secret mode available for curious visitors</span>
+                            </div>
+                        </div>
+
+                        {filteredProjects.length === 0 ? (
+                            <Card title="No Matching Projects" eyebrow="Explorer" className="border-cyber-accent/18 bg-[#08111d]/90">
+                                <p className="text-soft">
+                                    No projects match that combination yet. Try another keyword or switch the filter back to `All`.
+                                </p>
+                            </Card>
+                        ) : (
                         <div className="grid gap-6 sm:grid-cols-2 2xl:grid-cols-4">
-                            {profile.projects.map((project, index) => (
+                            {filteredProjects.map((project, index) => (
                                 <MotionDiv
                                     key={project.title}
                                     initial={{ opacity: 0, y: 24 }}
@@ -415,16 +520,41 @@ function App() {
                                     transition={{ duration: 0.45, delay: index * 0.08 }}
                                     viewport={{ once: true, amount: 0.2 }}
                                 >
-                                    <Card title={project.title} eyebrow={project.eyebrow} className="flex h-full flex-col border-cyber-pink/20 bg-gradient-to-b from-[#08111d]/96 to-[#0d2330]/76 transition-transform hover:-translate-y-1">
+                                    <div
+                                        onMouseEnter={() => setHoveredProject(project.title)}
+                                        onMouseLeave={() => setHoveredProject(null)}
+                                        className="group h-full"
+                                    >
+                                    <Card title={project.title} eyebrow={project.eyebrow} className="relative flex h-full flex-col overflow-hidden border-cyber-pink/20 bg-gradient-to-b from-[#08111d]/96 to-[#0d2330]/76 transition-transform duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_18px_60px_rgba(125,249,255,0.12)]">
+                                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyber-accent/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                        <div className="mb-4 flex items-center justify-between gap-3">
+                                            <span className="rounded-full border border-cyber-accent/18 bg-cyber-accent/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-cyan-100">
+                                                {hoveredProject === project.title ? 'Preview Active' : 'System Build'}
+                                            </span>
+                                            <div className="flex items-center gap-1">
+                                                {[0, 1, 2].map((bar) => (
+                                                    <MotionDiv
+                                                        key={bar}
+                                                        className="w-1 rounded-full bg-cyber-accent/80"
+                                                        animate={hoveredProject === project.title ? { height: [6, 18, 7] } : { height: 6 }}
+                                                        transition={{ repeat: hoveredProject === project.title ? Infinity : 0, duration: 0.8 + bar * 0.08 }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
                                         <p className="text-soft">{project.description}</p>
                                         <p className="content-shell mt-4 rounded-2xl border-cyber-accent/15 px-4 py-4 text-sm leading-7 text-cyan-50">
                                             {project.impact}
                                         </p>
                                         <div className="mt-5 flex flex-wrap gap-2">
                                             {project.tech.map((tech) => (
-                                                <span key={tech} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cyber-yellow">
+                                                <MotionDiv
+                                                    key={tech}
+                                                    whileHover={{ y: -2 }}
+                                                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cyber-yellow transition-colors duration-300 group-hover:border-cyber-accent/28 group-hover:bg-cyber-accent/10"
+                                                >
                                                     {tech}
-                                                </span>
+                                                </MotionDiv>
                                             ))}
                                         </div>
                                         <div className="mt-6 flex items-center gap-3 pt-2">
@@ -434,9 +564,11 @@ function App() {
                                             </SmartLink>
                                         </div>
                                     </Card>
+                                    </div>
                                 </MotionDiv>
                             ))}
                         </div>
+                        )}
                     </div>
                 </Section>
 

@@ -58,6 +58,16 @@
     min-height: 100vh;
 }
 
+.hyperdrive-mode {
+    --color-cyber-accent: #9afcff;
+    --color-cyber-pink: #00bbff;
+    --color-cyber-yellow: #e1ffff;
+}
+
+.hyperdrive-mode .panel-surface {
+    box-shadow: 0 20px 55px rgba(0, 179, 255, 0.18);
+}
+
 .panel-surface {
     background: rgba(7, 10, 20, 0.82);
     backdrop-filter: blur(18px);
