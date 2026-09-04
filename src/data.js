@@ -32,12 +32,18 @@ export const profile = {
 
     /** Portrait, reels, and AI video prompts — edit paths here */
     media: {
-        portrait: "/assets/me.jpg",
-        portraitNote: "Replace public/assets/me.jpg to update your face everywhere (hero + media).",
+        portrait: "/assets/me-portrait.jpg",
+        desk: "/assets/me-desk.jpg",
+        portraits: [
+            { id: "stand", src: "/assets/me-portrait.jpg", label: "Studio" },
+            { id: "desk", src: "/assets/me-desk.jpg", label: "Building" },
+            { id: "focus", src: "/assets/me-close.jpg", label: "Focus" },
+        ],
+        portraitNote: "Replace public/assets/me-portrait.jpg and me-desk.jpg to update face placements.",
         videos: [
-            // { id: "reel-1", src: "/assets/videos/reel-1.mp4", poster: "/assets/me.jpg", title: "Cinematic desk" },
-            // { id: "reel-2", src: "/assets/videos/reel-2.mp4", poster: "/assets/me.jpg", title: "Orbital portrait" },
-            // { id: "reel-3", src: "/assets/videos/reel-3.mp4", poster: "/assets/me.jpg", title: "Code glow" },
+            // { id: "reel-1", src: "/assets/videos/reel-1.mp4", poster: "/assets/me-portrait.jpg", title: "Cinematic desk" },
+            // { id: "reel-2", src: "/assets/videos/reel-2.mp4", poster: "/assets/me-portrait.jpg", title: "Orbital portrait" },
+            // { id: "reel-3", src: "/assets/videos/reel-3.mp4", poster: "/assets/me-portrait.jpg", title: "Code glow" },
         ],
         videoPrompts: [
             {

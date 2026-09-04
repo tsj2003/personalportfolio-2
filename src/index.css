@@ -23,8 +23,8 @@
 
     body {
         margin: 0;
-        background: #fff;
-        color: #0c0c0c;
+        background: #07080f;
+        color: #f2f2f5;
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
@@ -72,8 +72,26 @@
 }
 
 .sb-page {
-    background: #fff;
-    color: #0c0c0c;
+    background: transparent;
+    color: #f2f2f5;
+    position: relative;
+    z-index: 1;
+}
+
+.codex-field-global {
+    position: fixed !important;
+    inset: 0;
+    width: 100vw;
+    height: 100svh;
+    min-height: 100svh !important;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.codex-field-global canvas {
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
 }
 
 .cursor-dot,
@@ -452,8 +470,26 @@
     aspect-ratio: 4 / 5;
     object-fit: cover;
     border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-    border: 3px solid #fff;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    border: 3px solid rgba(255, 255, 255, 0.85);
+}
+
+.hero-desk {
+    display: none;
+    width: min(200px, 36vw);
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    justify-self: end;
+    align-self: end;
+}
+
+@media (min-width: 900px) {
+    .hero-desk {
+        display: block;
+    }
 }
 
 .hero-bottom {
@@ -1098,7 +1134,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 92, 50, 0.55);
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.sb-page-dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* ── Voice RAG Agent (champagne dial on navy) ── */
@@ -1315,6 +1355,17 @@
     gap: 10px;
     min-height: 120px;
     max-height: 220px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(224, 203, 168, 0.35) transparent;
+}
+
+.vra-chat::-webkit-scrollbar {
+    width: 6px;
+}
+
+.vra-chat::-webkit-scrollbar-thumb {
+    background: rgba(224, 203, 168, 0.35);
+    border-radius: 999px;
 }
 
 .vra-msg {
@@ -1356,9 +1407,16 @@
 
 .vra-prompts {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto;
-    padding: 0 18px 10px;
+    overflow: visible;
+    padding: 0 18px 12px;
+    scrollbar-width: none;
+}
+
+.vra-prompts::-webkit-scrollbar {
+    display: none;
+    height: 0;
 }
 
 .vra-prompts button {
@@ -1413,46 +1471,52 @@
     place-items: center;
 }
 
-/* ── Codex interactive field ── */
+/* ── Codex / portrait rail (dark, no copy) ── */
 .codex-section {
     position: relative;
-    min-height: 100svh;
-    display: grid;
-    background: #cfc6f0;
+    min-height: auto;
+    padding: clamp(48px, 8vw, 96px) clamp(16px, 4vw, 48px);
+    overflow: hidden;
+    background: transparent;
 }
 
-@media (min-width: 980px) {
-    .codex-section {
-        grid-template-columns: 0.85fr 1.15fr;
+.portrait-rail {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 760px) {
+    .portrait-rail {
+        grid-template-columns: 0.9fr 1.1fr 0.85fr;
+        align-items: stretch;
+        gap: 18px;
     }
 }
 
-.codex-section-copy {
-    position: relative;
-    z-index: 2;
-    padding: clamp(64px, 10vw, 120px) clamp(20px, 4vw, 56px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
-}
-
-.codex-section-copy h2 {
+.portrait-frame {
     margin: 0;
-    max-width: 12ch;
-    font-family: var(--font-display);
-    font-size: clamp(34px, 5vw, 56px);
-    letter-spacing: -0.045em;
-    line-height: 1.05;
-    color: #2a2450;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.35);
+    min-height: 280px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
-.codex-section-copy p:last-child {
-    margin: 18px 0 0;
-    max-width: 36ch;
-    color: rgba(42, 36, 80, 0.72);
-    line-height: 1.55;
-    font-size: 15px;
+.portrait-frame:nth-child(2) {
+    min-height: 340px;
+}
+
+.portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.05) contrast(1.04);
 }
 
 .codex-field {
@@ -1462,32 +1526,140 @@
     overflow: hidden;
 }
 
-@media (min-width: 980px) {
-    .codex-field {
-        min-height: 100svh;
-    }
-}
-
 .codex-field canvas {
     display: block;
     width: 100%;
     height: 100%;
     touch-action: none;
-    cursor: crosshair;
 }
 
-.codex-caption {
-    position: absolute;
-    right: 24px;
-    bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.78);
-    text-shadow: 0 1px 8px rgba(80, 60, 140, 0.35);
-    pointer-events: none;
+/* ── Dark Codex UI overrides (sitewide) ── */
+.sb-page-dark {
+    color: #f2f2f5;
+}
+
+.sb-page-dark .sb-nav {
+    background: rgba(7, 8, 15, 0.72);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    color: #fff;
+}
+
+.sb-page-dark .sb-logo,
+.sb-page-dark .sb-nav-links button,
+.sb-page-dark .sb-contact-pill {
+    color: #f5f5f7;
+}
+
+.sb-page-dark .hero,
+.sb-page-dark .showcase,
+.sb-page-dark .experience,
+.sb-page-dark .process,
+.sb-page-dark .projects,
+.sb-page-dark .achievements {
+    background: transparent;
+    color: #f2f2f5;
+}
+
+.sb-page-dark .hero-kicker,
+.sb-page-dark .hero-copy,
+.sb-page-dark .hero-stat-label,
+.sb-page-dark .section-eyebrow,
+.sb-page-dark .showcase-lead,
+.sb-page-dark .project-impact,
+.sb-page-dark .project-eyebrow {
+    color: rgba(242, 242, 245, 0.68);
+}
+
+.sb-page-dark .hero-title,
+.sb-page-dark .hero-stat-value,
+.sb-page-dark .showcase-head h2,
+.sb-page-dark .projects-head h2,
+.sb-page-dark .project-name,
+.sb-page-dark .experience h2,
+.sb-page-dark .process h2 {
+    color: #fff;
+}
+
+.sb-page-dark .hero-grid span,
+.sb-page-dark .project-row {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.sb-page-dark .project-tag,
+.sb-page-dark .project-link {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #f2f2f5;
+}
+
+.sb-page-dark .project-link-live {
+    background: #fff;
+    border-color: #fff;
+    color: #0c0c0c;
+}
+
+.sb-page-dark .project-link-live:hover {
+    background: #ff5c32;
+    border-color: #ff5c32;
+    color: #fff;
+}
+
+.sb-page-dark .band-orange {
+    background: linear-gradient(135deg, #ff5c32 0%, #ff3d00 100%);
+    color: #0c0c0c;
+}
+
+.sb-page-dark .band-orange h2,
+.sb-page-dark .band-orange p {
+    color: #0c0c0c;
+}
+
+.sb-page-dark .trace-chip {
+    background: rgba(12, 12, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #cfd3e6;
+}
+
+.sb-page-dark .intro-splash {
+    background: #07080f;
+    color: #fff;
+}
+
+.sb-page-dark .showcase-canvas {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sb-page-dark .callout {
+    background: rgba(8, 9, 16, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.sb-page-dark .footer-cta h2,
+.sb-page-dark .footer-watermark {
+    color: #fff;
+}
+
+.sb-page-dark .cursor-ring {
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+.sb-page-dark .marquee {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.sb-page-dark .sb-btn {
+    background: #fff;
+    color: #0c0c0c;
+}
+
+.sb-page-dark .reel-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
+.sb-page-dark .reel-orbit text {
+    fill: rgba(255, 255, 255, 0.55);
 }

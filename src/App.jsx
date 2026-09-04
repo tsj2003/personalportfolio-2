@@ -219,7 +219,8 @@ export default function App() {
     };
 
     return (
-        <div className="sb-page">
+        <div className="sb-page sb-page-dark">
+            <CodexField mode="global" className="codex-global-bg" />
             <CustomCursor />
             <div className="progress-rail" aria-hidden="true">
                 <div className="progress-fill" ref={progressRef} />
@@ -316,7 +317,11 @@ export default function App() {
                             src={profile.media.portrait}
                             alt="Tarandeep Singh Juneja"
                         />
-                        <div />
+                        <img
+                            className="hero-desk"
+                            src={profile.media.desk}
+                            alt="Tarandeep at the desk"
+                        />
                     </motion.div>
 
                     <div className="hero-bottom">
@@ -403,19 +408,14 @@ export default function App() {
                 </div>
             </section>
 
-            <section className="codex-section" id="codex">
-                <div className="codex-section-copy">
-                    <p className="section-eyebrow" style={{ color: '#5b4d8a' }}>
-                        <i style={{ background: '#7c6bb8' }} />
-                        Interactive codex
-                    </p>
-                    <h2>Touch the cloud. Watch silence become binary.</h2>
-                    <p>
-                        A live glyph field inspired by Codex UI. Idle it breathes as -, &gt;, o. Near
-                        your cursor it ripples and reveals 0 / 1 — like a mind opening under query.
-                    </p>
+            <section className="codex-section" id="codex" aria-label="Portrait gallery">
+                <div className="portrait-rail">
+                    {(profile.media.portraits || []).slice(0, 3).map((shot) => (
+                        <figure key={shot.id} className="portrait-frame">
+                            <img src={shot.src} alt={`${profile.name} — ${shot.label}`} />
+                        </figure>
+                    ))}
                 </div>
-                <CodexField className="codex-hero-field" />
             </section>
 
             <section className="showcase" id="systems">
@@ -577,7 +577,7 @@ export default function App() {
             </section>
 
             <section className="footer-cta" id="contact">
-                <img className="bg" src={profile.media.portrait} alt="" />
+                <img className="bg" src={profile.media.desk} alt="" />
                 <div className="footer-cta-inner">
                     <div className="footer-watermark">TSJ.</div>
                     <h2>Let&apos;s ship your next system.</h2>

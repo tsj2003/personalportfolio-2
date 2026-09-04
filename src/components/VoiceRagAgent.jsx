@@ -30,13 +30,14 @@ export default function VoiceRagAgent() {
     const [messages, setMessages] = useState([
         {
             role: 'assistant',
-            text: `Hi. I'm the TSJ RAG agent. Ask about ${profile.firstName}'s work, or say you want to contact him.`,
+            text: `Hey. I'm the TSJ systems agent for ${profile.name}. Ask about projects, experience, skills, or say you want to contact him.`,
         },
     ]);
     const [tick, setTick] = useState(0);
     const recognitionRef = useRef(null);
     const silenceTimer = useRef(null);
     const listRef = useRef(null);
+    const phaseTimer = useRef(null);
     const prompts = useMemo(() => getQuickPrompts(), []);
 
     useEffect(() => {
@@ -51,14 +52,26 @@ export default function VoiceRagAgent() {
         return undefined;
     }, [phase]);
 
+    useEffect(() => () => {
+        clearTimeout(silenceTimer.current);
+        clearTimeout(phaseTimer.current);
+        try {
+            recognitionRef.current?.stop();
+        } catch {
+            /* ignore */
+        }
+        window.speechSynthesis?.cancel();
+    }, []);
+
     const runQuery = useCallback(async (query) => {
         const q = query.trim();
         if (!q) return;
 
+        clearTimeout(phaseTimer.current);
         setMessages((m) => [...m, { role: 'user', text: q }]);
         setTranscript(q);
         setPhase('transcribing');
-        await new Promise((r) => setTimeout(r, 280));
+        await new Promise((r) => setTimeout(r, 220));
         setPhase('thinking');
 
         try {
@@ -73,10 +86,10 @@ export default function VoiceRagAgent() {
                     actions: result.actions,
                 },
             ]);
-            speak(result.answer, () => setPhase('idle'));
-            if (result.intent === 'contact' || result.intent === 'hire') {
-                // keep answering until speech ends
-            }
+            const finish = () => setPhase('idle');
+            speak(result.answer, finish);
+            // speechSynthesis can miss onend — never leave pills stuck
+            phaseTimer.current = setTimeout(finish, Math.min(12000, 1800 + result.answer.length * 45));
         } catch {
             setMessages((m) => [
                 ...m,
@@ -126,7 +139,7 @@ export default function VoiceRagAgent() {
             let interim = '';
             for (let i = event.resultIndex; i < event.results.length; i += 1) {
                 const piece = event.results[i][0].transcript;
-                if (event.results[i].isFinal) finalText += piece;
+                if (event.results[i].isFinal) finalText += `${piece} `;
                 else interim += piece;
             }
             setTranscript((finalText || interim).trim());
@@ -145,13 +158,17 @@ export default function VoiceRagAgent() {
         };
 
         recognition.onend = () => {
-            const q = (finalText || transcript).trim();
+            const q = finalText.trim();
             if (q) runQuery(q);
             else setPhase('idle');
         };
 
-        recognition.start();
-    }, [runQuery, transcript]);
+        try {
+            recognition.start();
+        } catch {
+            setPhase('idle');
+        }
+    }, [runQuery]);
 
     const toggleMic = () => {
         if (phase === 'listening') {

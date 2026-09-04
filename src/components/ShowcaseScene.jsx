@@ -59,7 +59,7 @@ export default function ShowcaseScene() {
                     camera={{ position: [0.35, 1.15, 7.6], fov: isMobile ? 42 : 33 }}
                     gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
                     onCreated={({ gl }) => {
-                        gl.setClearColor('#f3f3f3');
+                        gl.setClearColor('#0a0b14');
                     }}
                 >
                     <ambientLight intensity={0.75} />
