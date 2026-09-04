@@ -221,6 +221,7 @@ export default function App() {
     return (
         <div className="sb-page sb-page-dark">
             <CodexField mode="global" className="codex-global-bg" />
+            <div className="sb-content">
             <CustomCursor />
             <div className="progress-rail" aria-hidden="true">
                 <div className="progress-fill" ref={progressRef} />
@@ -618,6 +619,7 @@ export default function App() {
                 <span>© {new Date().getFullYear()} {profile.name}</span>
                 <span>STATUS · systems_online · latency_ok</span>
             </footer>
+            </div>
 
             <VoiceRagAgent />
         </div>

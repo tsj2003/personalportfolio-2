@@ -72,15 +72,8 @@ export default function CodexField({
 
         const drawFrame = (t, force) => {
             if (!visible && !force) return false;
+            // keep canvas mostly clear so site content stays readable
             ctx.clearRect(0, 0, w, h);
-
-            // deep space wash
-            const g = ctx.createRadialGradient(w * 0.5, h * 0.2, 40, w * 0.5, h * 0.5, Math.max(w, h) * 0.85);
-            g.addColorStop(0, 'rgba(28, 30, 48, 0.55)');
-            g.addColorStop(0.55, 'rgba(8, 9, 16, 0.35)');
-            g.addColorStop(1, 'rgba(4, 5, 10, 0.15)');
-            ctx.fillStyle = g;
-            ctx.fillRect(0, 0, w, h);
 
             const mx = mouse.x;
             const my = mouse.y;

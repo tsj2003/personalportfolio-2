@@ -72,10 +72,16 @@
 }
 
 .sb-page {
-    background: transparent;
+    background: #07080f;
     color: #f2f2f5;
     position: relative;
-    z-index: 1;
+    min-height: 100svh;
+}
+
+.sb-content {
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
 }
 
 .codex-field-global {
@@ -1555,10 +1561,43 @@
 .sb-page-dark .showcase,
 .sb-page-dark .experience,
 .sb-page-dark .process,
-.sb-page-dark .projects,
-.sb-page-dark .achievements {
-    background: transparent;
+.sb-page-dark .projects {
+    background: rgba(7, 8, 15, 0.88);
     color: #f2f2f5;
+}
+
+.sb-page-dark .achievements {
+    background: #0c0c0c;
+}
+
+.sb-page-dark .codex-section {
+    background: rgba(7, 8, 15, 0.72);
+}
+
+.sb-page-dark .hero-title {
+    color: #ffffff;
+    position: relative;
+    z-index: 2;
+}
+
+.sb-page-dark .hero-portrait,
+.sb-page-dark .hero-desk {
+    max-width: 220px;
+    max-height: 280px;
+}
+
+.sb-page-dark .footer-cta .bg {
+    opacity: 0.45;
+    filter: brightness(0.55);
+}
+
+.sb-page-dark .footer-cta-inner {
+    position: relative;
+    z-index: 3;
+}
+
+.sb-page-dark .footer-watermark {
+    opacity: 0.12;
 }
 
 .sb-page-dark .hero-kicker,
